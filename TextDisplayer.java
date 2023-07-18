@@ -11,7 +11,7 @@ public class TextDisplayer extends Actor
     public void changeText(String text) 
     {
         // color1 = text color, color2 = background color as rgba (a = alpha/transparency, 0=invisible, 255=opaque)
-        GreenfootImage txtImg = new GreenfootImage(text, 52, Color.WHITE, new Color(0, 0, 0, 128));
+        GreenfootImage txtImg = new GreenfootImage(" " + text + " ", 52, Color.WHITE, new Color(0, 0, 0, 128));
         setImage(txtImg);
     }    
 }

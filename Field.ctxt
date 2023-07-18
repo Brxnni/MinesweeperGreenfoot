@@ -1,0 +1,17 @@
+#BlueJ class context
+comment0.target=Field
+comment1.params=b
+comment1.target=Field(boolean)
+comment2.params=
+comment2.target=java.util.List\ getNeighbours()
+comment3.params=
+comment3.target=void\ calculateNum()
+comment4.params=
+comment4.target=void\ revealNeighbours()
+comment5.params=
+comment5.target=void\ reveal()
+comment6.params=
+comment6.target=void\ leftClick()
+comment7.params=
+comment7.target=void\ rightClick()
+numComments=8

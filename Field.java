@@ -11,12 +11,24 @@ public class Field extends Actor
     public boolean isFlagged = false;
     public boolean isCovered = true;
     
+    public int cellSize = 32;
+    public BombWorld world;
+    
     public Field(boolean b){
         isBomb = b;
-        
-        setImage(new GreenfootImage("covered.png"));
     }
-
+        
+    public void addedToWorld(World w){
+        world = (BombWorld) w;
+        cellSize = w.getCellSize();
+        changeImage("covered.png");
+    }
+    
+    public void changeImage(String newImg){
+        setImage(new GreenfootImage(newImg));
+        getImage().scale(cellSize, cellSize);
+    }
+    
     public List<Field> getNeighbours(){
         List<Field> neighbours = new ArrayList<Field>();
         
@@ -54,7 +66,7 @@ public class Field extends Actor
     }
         
     public void reveal(){
-        setImage(new GreenfootImage(num + ".png"));
+        changeImage(num + ".png");
         isCovered = false;
     }
     
@@ -62,7 +74,7 @@ public class Field extends Actor
         if (isFlagged) return;
         if (isBomb){
             // Bomb that was clicked on gets red highlight
-            setImage("exploded_bomb.png");
+            changeImage("exploded_bomb.png");
             ((BombWorld) getWorld()).gameOver(this);
         }
         if (!isBomb){
@@ -90,10 +102,10 @@ public class Field extends Actor
         isFlagged = !isFlagged;
         
         if (isFlagged){
-            setImage(new GreenfootImage("flagged.png"));
+            changeImage("flagged.png");
             ((BombWorld) getWorld()).checkHasWon();
         } else {
-            setImage(new GreenfootImage("covered.png"));
+            changeImage("covered.png");
         }
     }
 }

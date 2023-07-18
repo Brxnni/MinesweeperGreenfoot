@@ -6,10 +6,6 @@ import java.util.ArrayList;
 // Literally Bosnia & Herzegovina
 public class BombWorld extends World {
     
-    // i cant use these values in the superconstructor for some stupid reason, so they are half useless (thanks java)
-    public int fieldWidth = 28;
-    public int fieldHeight = 16;
-    public int fieldSize = 32;
     // 10 = 10% chance that a field is a bomb
     // easy ~ 10%
     // hard ~ 25%
@@ -81,10 +77,10 @@ public class BombWorld extends World {
             
             // Every bomb that was not flagged
             if (f.isBomb && !f.isFlagged){
-                f.setImage("bomb.png");
+                f.changeImage("bomb.png");
             // Field that was flagged but was not a bomb
             } else if (!f.isBomb && f.isFlagged){
-                f.setImage("false_flag.png");
+                f.changeImage("false_flag.png");
             } else if (!f.isBomb){
                 f.reveal();
             }
@@ -117,8 +113,8 @@ public class BombWorld extends World {
     }
     
     public void populateMinefield(){
-        for (int i = 0; i < fieldWidth; i++){
-            for (int j = 0; j < fieldHeight; j++){
+        for (int i = 0; i < getWidth(); i++){
+            for (int j = 0; j < getHeight(); j++){
                 
                 boolean isBomb = (Greenfoot.getRandomNumber(100) + 1) > (100 - bombChance);
                 Field f = new Field(isBomb);

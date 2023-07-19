@@ -9,15 +9,18 @@ public class BombWorld extends World {
     // 10 = 10% chance that a field is a bomb
     // easy ~ 10%
     // hard ~ 25%
-    public int bombChance = 12;
+    public int bombChance = 1;
     public long startTime;
+    public int bombCount = 0;
     
     public TextDisplayer display;
     
     public BombWorld()
     {
         // hardcoded >:-(
-        super(28, 6, 32);
+        // 64, 32, 24
+        // 26, 18, 32
+        super(30, 10, 48);
         populateMinefield();
         
         display = new TextDisplayer();
@@ -90,15 +93,12 @@ public class BombWorld extends World {
             
         }
         
-        showPrettyText("You exploded. Skill issue!\n Time wasted: " + showTimeTaken());
+        long diff = System.currentTimeMillis() - startTime;
+        showPrettyText("You exploded. Skill issue!\n Time wasted: " + showTimeTaken(diff));
         Greenfoot.stop();        
     }
     
-    public String showTimeTaken(){
-        long currentTime = System.currentTimeMillis();
-        long diff = currentTime - startTime;
-        
-        long millis = diff;
+    public String showTimeTaken(long millis){
         // Round to 3 digits
         millis = ((long) millis * 1000) / 1000;
         // Calculate seconds and minutes taken
@@ -111,7 +111,14 @@ public class BombWorld extends World {
     }
     
     public void win(){
-        showPrettyText("Congratulations! You found every Bomb.\nTime taken: " + showTimeTaken());
+        long diff = System.currentTimeMillis() - startTime;
+        double diffSec = ((float) diff) / 1000.0;
+        // Calculate bombs per second score
+        // I hate integer division in Java
+        double bps = bombCount / diffSec;
+        bps = ((int) (bps * 100)) / 100.0;
+        
+        showPrettyText("Congratulations! You found every Bomb.\nTime taken: " + showTimeTaken(diff) + " [" + bps + "b/s]");
         Greenfoot.stop();
     }
     
@@ -142,6 +149,10 @@ public class BombWorld extends World {
                 boolean isBomb = (Greenfoot.getRandomNumber(100) + 1) > (100 - bombChance);
                 Field f = new Field(isBomb);
                 addObject(f, i, j);
+                
+                if (isBomb){
+                    bombCount++;
+                }
                 
             }
         }

@@ -9,18 +9,21 @@ public class BombWorld extends World {
     // 10 = 10% chance that a field is a bomb
     // easy ~ 10%
     // hard ~ 25%
-    public int bombChance = 19;
+    public int bombChance = 12;
+    public long startTime;
     
     public TextDisplayer display;
     
     public BombWorld()
     {
         // hardcoded >:-(
-        super(28, 16, 32);
+        super(28, 6, 32);
         populateMinefield();
         
         display = new TextDisplayer();
         addObject(display, getWidth() / 2, getHeight() / 2);
+        
+        startTime = System.currentTimeMillis();
     }
     
     public void showPrettyText(String txt){
@@ -87,8 +90,29 @@ public class BombWorld extends World {
             
         }
         
-        showPrettyText("You exploded. Skill issue!");
+        showPrettyText("You exploded. Skill issue!\n Time wasted: " + showTimeTaken());
         Greenfoot.stop();        
+    }
+    
+    public String showTimeTaken(){
+        long currentTime = System.currentTimeMillis();
+        long diff = currentTime - startTime;
+        
+        long millis = diff;
+        // Round to 3 digits
+        millis = ((long) millis * 1000) / 1000;
+        // Calculate seconds and minutes taken
+        int secs = (int) (millis / 1000);
+        millis %= 1000;
+        int mins = (int) (secs / 60);
+        secs %= 60;
+        
+        return (String.format("%02d", mins)) + ":" + (String.format("%02d", secs)) + "." + millis;
+    }
+    
+    public void win(){
+        showPrettyText("Congratulations! You found every Bomb.\nTime taken: " + showTimeTaken());
+        Greenfoot.stop();
     }
     
     public void checkHasWon(){
@@ -107,8 +131,7 @@ public class BombWorld extends World {
         }
         
         if (hasWon){
-            showPrettyText("Congratulations! You found every Bomb.");
-            Greenfoot.stop();
+            win();
         }
     }
     

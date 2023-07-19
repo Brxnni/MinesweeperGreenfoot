@@ -61,7 +61,10 @@ public class Field extends Actor
     public void revealNeighbours(){
         List<Field> neighbours = getNeighbours();
         for (Field f : neighbours){
-            f.reveal();
+            // dont remove incorrect flags, let them ponder
+            if (!f.isFlagged){
+                f.reveal();
+            }
         }
     }
         
